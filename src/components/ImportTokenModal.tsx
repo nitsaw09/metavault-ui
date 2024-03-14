@@ -22,9 +22,8 @@ const ImportTokenModal: React.FC<ImportTokenModalProps> = ({ show, onHide, onImp
   const [decimal, setDecimal] = React.useState<string>('');
 
   /**
-   * A description of the entire function.
+   * Handle import NFT.
    *
-   * @param {type} paramName - description of parameter
    * @return {void} 
    */
   const handleImport = (): void => {

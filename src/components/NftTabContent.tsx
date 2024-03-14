@@ -30,11 +30,11 @@ const NftTabContent: React.FC = (): React.ReactElement => {
   const [showImportModal, setShowImportModal] = React.useState(false);
 
   /**
-   * A description of the entire function.
+   * handle import NFT.
    *
-   * @param {string} address - description of parameter
-   * @param {string} tokenId - description of parameter
-   * @return {void} description of return value
+   * @param {string} address - NFT contract address
+   * @param {string} tokenId - NFT token id
+   * @return {void} return void
    */
   const handleImport = (address: string, tokenId: string): void => {
     // Add your import logic here
