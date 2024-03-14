@@ -8,12 +8,26 @@ interface ImportTokenModalProps {
   onImport: (address: string, symbol: string, decimal: string) => void;
 }
 
-const ImportTokenModal: React.FC<ImportTokenModalProps> = ({ show, onHide, onImport }) => {
-  const [address, setAddress] = React.useState('');
-  const [symbol, setSymbol] = React.useState('');
-  const [decimal, setDecimal] = React.useState('');
+/**
+ * React functional component for importing a token.
+ *
+ * @param {ImportTokenModalProps} show - Boolean to indicate if the modal should be shown
+ * @param {function} onHide - Function to hide the modal
+ * @param {function} onImport - Function to handle the import action
+ * @return {ReactElement} The ImportTokenModal component
+ */
+const ImportTokenModal: React.FC<ImportTokenModalProps> = ({ show, onHide, onImport }): React.ReactElement => {
+  const [address, setAddress] = React.useState<string>('');
+  const [symbol, setSymbol] = React.useState<string>('');
+  const [decimal, setDecimal] = React.useState<string>('');
 
-  const handleImport = () => {
+  /**
+   * A description of the entire function.
+   *
+   * @param {type} paramName - description of parameter
+   * @return {void} 
+   */
+  const handleImport = (): void => {
     onImport(address, symbol, decimal);
     onHide();
   };

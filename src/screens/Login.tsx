@@ -1,7 +1,11 @@
 import React from 'react';
 import { Button, Card, Container, Form, Row } from 'react-bootstrap';
 
-const Login: React.FC = () => {
+/**
+ * Login component
+ * @returns React.TReactElement
+ */
+const Login: React.FC = (): React.ReactElement => {
   return (
     <>
     <Container className="wallet-form-wizard">

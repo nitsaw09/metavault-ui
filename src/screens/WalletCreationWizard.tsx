@@ -1,31 +1,52 @@
-import { useState } from "react";
-import { Badge, Button, Card, Container, Form, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Badge, Button, Card, Container, Form, OverlayTrigger, Row, Tooltip, TooltipProps } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-const WalletCreationWizard: React.FC = () => {
-  const [step, setStep] = useState(1);
-  const [wallet, setWallet] = useState(null);
-  const [revealPhraseBtnTxt, setRevealPhraseBtnTxt] = useState('show');
-  const [opacityValue, setOpacityValue] = useState({ opacity: '0.05' });
-  const [tooltipCopyText, setTooltipCopyText] = useState('Copy to Clipboard');
-  const [showError, setShowError] = useState('none');
-
-  const generatePhrases = () => {
-    return Array.from({ length: 12 }, (_, index) => `Phrase ${index + 1}`);
-  };
-
-  const [phrases, setPhrases] = useState(generatePhrases());
+/**
+ * Generate and return the react elements based on the current step.
+ *
+ * @return {(React.ReactElement)} The react elements to render.
+ */
+const WalletCreationWizard: React.FC = (): React.ReactElement => {
+  const [step, setStep] = useState<number>(1);
+  const [wallet, setWallet] = useState<string>('');
+  const [revealPhraseBtnTxt, setRevealPhraseBtnTxt] = useState<string>('show');
+  const [opacityValue, setOpacityValue] = useState<string>('0.05');
+  const [tooltipCopyText, setTooltipCopyText] = useState<string>('Copy to Clipboard');
+  const [showError, setShowError] = useState<string>('none');
+  const [phrases, setPhrases] = useState<string[]>([]);
 
   const history = useHistory();
 
-  const handleFormSubmit = (event: any) => {
+  useEffect(() => {
+    setPhrases(generatePhrases());
+  }, []);
+
+  /**
+   * Generates an array of 12 random strings,
+   * each prefixed with 'Phrase ' and the index + 1
+   *
+   * @returns Array<string> - An array of 12 random strings
+   */
+  const generatePhrases = (): Array<string> => {
+    return Array.from({ length: 12 }, (_el, index) => `Phrase ${index + 1}`);
+  }
+
+  /**
+   * Handles the form submission event.
+   * 
+   * @param event The form submission event, which should have a target with a property `formPassword` 
+   * and `formPasswordConfirm` containing the password inputs.
+   * @returns void
+   */
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    const password = event.target.formPassword.value;
-    const confirmPassword = event.target.formPasswordConfirm.value;
+    const password = event.currentTarget.formPassword.value;
+    const confirmPassword = event.currentTarget.formPasswordConfirm.value;
 
     if (password !== confirmPassword) {
-      alert("The passwords you entered do not match.");
+      setShowError("The passwords you entered do not match.");
       return;
     }
 
@@ -35,62 +56,96 @@ const WalletCreationWizard: React.FC = () => {
 
     // Go to the next step.
     handleNextClick();
-  };
+  }
 
-  const handleNextClick = () => {
+  /**
+   * Increments the step by 1.
+   *
+   * @returns void
+   */
+  const handleNextClick = (): void => {
     setStep(step + 1);
-  };
-
+  }
   // const handleBackClick = () => {
   //   setStep(step - 1);
   // };
 
-  const handleRevealPhrase = () => {
+  /**
+   * Handles the reveal phrase button click, toggling the visibility of the phrase.
+   * @param {React.MouseEvent<HTMLElement>} event The click event.
+   * @returns {void} This function does not return anything.
+   */
+  const handleRevealPhrase = (event: React.MouseEvent<HTMLElement>): void => {
+    event.preventDefault();
     const reveal = revealPhraseBtnTxt === 'show' ? true : false;
     if (reveal) {
-      setOpacityValue({ opacity: '1' });
+      setOpacityValue('1');
       setRevealPhraseBtnTxt('hide');
     } else {
-      setOpacityValue({ opacity: '0.05'});
+      setOpacityValue('0.05');
       setRevealPhraseBtnTxt('show');
     }
   }
 
-  const handleCopyClick = () => {
+
+  /**
+   * Copies the secret phrase to the clipboard.
+   *
+   * @param {MouseEvent} event The click event from the button.
+   * @returns {Promise<void>} A promise that resolves when the copy is complete.
+   */
+  const handleCopyClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     const listString = phrases.join('\n');
-    navigator.clipboard.writeText(listString)
-      .then(() => {
-        setTooltipCopyText('Copied Phrase!');
-      })
-      .catch((error) => {
-        setTooltipCopyText('Unable to Copy');
-      });
-    // Copy logic here (use document.execCommand or Clipboard API)
-    console.log("Copy phrases to clipboard");
+    event.preventDefault();
+    try {
+      await navigator.clipboard.writeText(listString);
+      setTooltipCopyText('Copied Phrase!');
+    } catch (error) {
+      setTooltipCopyText('Unable to Copy');
+    }
   };
 
-  const handleConfirmClick = () => {
-    const inputs = document.querySelectorAll('input[type="text"]');
-    const phraseIndx = [4, 5, 6];
+  /**
+   * Handles the click event on the confirm button.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event The click event from the button.
+   * @returns {void} This function does not return anything.
+   */
+  const handleConfirmClick = (): void => {
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[type="text"]');
+    const phraseIndx = [4, 5, 6] as const;
+
     for (let i = 0; i < inputs.length; i++) {
-      const input = inputs[i] as HTMLInputElement;
+      const input = inputs[i];
       if (phrases[phraseIndx[i]] !== input.value) {
         setShowError('block');
         console.log('Invalid Phrase');
         return;
       }
     }
+
     setShowError('none');
     history.push("/wallet");
   }
-
-  const renderCopyTooltip = (props: any) => (
+  
+  /**
+   * A description of the entire function.
+   *
+   * @param {TooltipProps} props - description of parameter
+   * @return {React.ReactElement} description of return value
+   */
+  const renderCopyTooltip = (props: TooltipProps): React.ReactElement => (
     <Tooltip id="button-tooltip" {...props}>
       {tooltipCopyText}
     </Tooltip>
   );
 
-  const renderStep = () => {
+  /**
+   * Generate and return the JSX elements based on the current step.
+   *
+   * @return {(React.ReactElement | null)} The JSX elements to render or null.
+   */
+  const renderStep = (): (React.ReactElement | null) => {
     switch (step) {
       case 1:
         return (
@@ -124,7 +179,7 @@ const WalletCreationWizard: React.FC = () => {
               <Container className="text-center mt-3">
                 <Row xs={2} className="mb-3">
                   {phrases.map((phrase, index) => (
-                    <Badge key={index} className="mb-2" style={opacityValue}>
+                    <Badge key={index} className="mb-2" style={{opacity: opacityValue}}>
                       {index + 1}. {phrase}
                     </Badge>
                   ))}

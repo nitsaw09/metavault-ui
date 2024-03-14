@@ -7,7 +7,14 @@ interface NetworkButtonProps {
   networkSelected: string;
 }
 
-const NetworkButton: React.FC<NetworkButtonProps> = ({ onClick, networkSelected }) => {
+/**
+ * Renders a NetworkButton component with the specified networkSelected value.
+ *
+ * @param {function} onClick - The function to call when the button is clicked.
+ * @param {string} networkSelected - The network value to display.
+ * @return {ReactElement} The rendered NetworkButton component.
+ */
+const NetworkButton: React.FC<NetworkButtonProps> = ({ onClick, networkSelected }): React.ReactElement => {
   return (
     <Button className="btn-top-bar ml-2" onClick={onClick}>
       <p>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AccountButton from '../components/AccountButton';
 import NetworkButton from '../components/NetworkButton';
 import AccountModal from '../components/AccountModal';
@@ -9,31 +9,58 @@ import TokenTabContent from '../components/TokenTabContent';
 import NftTabContent from '../components/NftTabContent';
 import ActivityTabContent from '../components/ActivityTabContent';
 
-const Wallet: React.FC = () => {
-  const [showAccountModal, setShowAccountModal] = useState(false);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const [selectedAccount, setSetSelectedAccount] = useState('Account 1');
-  const [selectedNetwork, setSetSelectedNetwork] = useState('Ethereum Mainnet');
+/**
+ * The Wallet screen component.
+ */
+const Wallet: React.FC = (): React.ReactElement => {
+  const [showAccountModal, setShowAccountModal] = useState<boolean>(false);
+  const [showNetworkModal, setShowNetworkModal] = useState<boolean>(false);
+  const [selectedAccount, setSetSelectedAccount] = useState<string>('');
+  const [selectedNetwork, setSetSelectedNetwork] = useState<string>('');
 
-  const handleAccountClick = () => {
+  useEffect(() => {
+    setSetSelectedAccount('Account 1');
+    setSetSelectedNetwork('Ethereum Mainnet');
+  }, [])
+
+  /**
+   * Handles the account button click.
+   */
+  const handleAccountClick = (): void => {
     setShowAccountModal(true);
   };
 
-  const handleAccountSelect = (account: string) => {
+  /**
+   * Handles the account select event.
+   *
+   * @param {string} account The selected account.
+   */
+  const handleAccountSelect = (account: string): void => {
     setSetSelectedAccount(account);
     setShowAccountModal(false);
   };
 
-  const handleNetworkSelect = (account: string) => {
-    setSetSelectedNetwork(account);
+  /**
+   * Handles the network select event.
+   *
+   * @param {string} network The selected network.
+   */
+  const handleNetworkSelect = (network: string): void => {
+    setSetSelectedNetwork(network);
     setShowNetworkModal(false);
   };
 
-  const handleNetworkClick = () => {
+  /**
+   * Handles the network button click.
+   */
+  const handleNetworkClick = (): void => {
     setShowNetworkModal(true);
   };
 
-  const handleClose = () => {
+  /**
+   * Handles the close event for both modals.
+   */
+  const handleClose = (): void => {
     setShowAccountModal(false);
     setShowNetworkModal(false);
   };

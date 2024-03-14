@@ -4,10 +4,23 @@ import ImportTokenModal from './ImportTokenModal';
 
 interface TokenTabContentProps {}
 
-const TokenTabContent: React.FC<TokenTabContentProps> = () => {
+/**
+ * Generates a token tab content component.
+ *
+ * @return {ReactNode} The token tab content component
+ */
+const TokenTabContent: React.FC<TokenTabContentProps> = (): React.ReactElement => {
   const [showImportModal, setShowImportModal] = React.useState(false);
 
-  const handleImport = (address: string, symbol: string, decimal: string) => {
+  /**
+   * A function to handle the import of a token.
+   *
+   * @param {string} address - the address of the token
+   * @param {string} symbol - the symbol of the token
+   * @param {string} decimal - the decimal of the token
+   * @return {void} 
+   */
+  const handleImport = (address: string, symbol: string, decimal: string): void => {
     // Add your import logic here
     console.log('Importing Token:', address, symbol, decimal);
   };

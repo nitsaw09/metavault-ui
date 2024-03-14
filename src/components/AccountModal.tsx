@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, ListGroup } from 'react-bootstrap';
 
 interface AccountModalProps {
@@ -7,8 +7,20 @@ interface AccountModalProps {
   onAccountSelect: (account: string) => void;
 }
 
-const AccountModal: React.FC<AccountModalProps> = ({ show, onHide, onAccountSelect }) => {
-  const accounts = ['Account 1', 'Account 2', 'Account 3'];
+/**
+ * Renders an Account Modal component with a list of accounts for selection.
+ *
+ * @param {AccountModalProps} show - Flag to show or hide the modal
+ * @param {Function} onHide - Function to handle modal close event
+ * @param {Function} onAccountSelect - Function to handle account selection
+ * @return {ReactElement} Account Modal component
+ */
+const AccountModal: React.FC<AccountModalProps> = ({ show, onHide, onAccountSelect }): React.ReactElement => {
+  const [accounts, setAccounts] = useState<string[]>([]);
+
+  useEffect(() => {
+    setAccounts(['Account 1', 'Account 2', 'Account 3']);
+  }, [])
 
   return (
     <Modal show={show} onHide={onHide}>

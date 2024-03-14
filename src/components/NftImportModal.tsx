@@ -8,11 +8,25 @@ interface NftImportModalProps {
   onImport: (address: string, tokenId: string) => void;
 }
 
-const NftImportModal: React.FC<NftImportModalProps> = ({ show, onHide, onImport }) => {
-  const [address, setAddress] = React.useState('');
-  const [tokenId, setTokenId] = React.useState('');
+/**
+ * React component for displaying a modal form to import NFT.
+ *
+ * @param {NftImportModalProps} show - boolean to show or hide the modal
+ * @param {Function} onHide - function to handle modal hide event
+ * @param {Function} onImport - function to import NFT token
+ * @return {React.ReactElement} The rendered modal component
+ */
+const NftImportModal: React.FC<NftImportModalProps> = ({ show, onHide, onImport }): React.ReactElement => {
+  const [address, setAddress] = React.useState<string>('');
+  const [tokenId, setTokenId] = React.useState<string>('');
 
-  const handleImport = () => {
+  /**
+   * A function that handles the import process.
+   *
+   * @param {void} 
+   * @return {void}
+   */
+  const handleImport = (): void => {
     onImport(address, tokenId);
     onHide();
   };

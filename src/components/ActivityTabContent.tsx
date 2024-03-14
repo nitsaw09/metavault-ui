@@ -29,6 +29,12 @@ const TransactionData = [
   },
 ];
 
+/**
+ * Renders a span element with a specific class based on the status provided.
+ *
+ * @param {string} status - The status to determine the class for the span element.
+ * @return {JSX.Element} The span element with the appropriate class based on the status.
+ */
 const StatusText = ({ status }: { status: string }) => {
     switch (status) {
       case 'completed':
@@ -42,7 +48,12 @@ const StatusText = ({ status }: { status: string }) => {
     }
 };
 
-const ActivityTabContent: React.FC = () => {
+/**
+ * Generates the content for the Activity Tab.
+ *
+ * @return {ReactElement} The JSX content for the Activity Tab.
+ */
+const ActivityTabContent: React.FC = (): React.ReactElement => {
   return (
     <>
     <Row className="p-2 activityTabContent">

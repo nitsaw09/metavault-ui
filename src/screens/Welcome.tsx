@@ -3,16 +3,23 @@ import { Button, Card, Container, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 
-const Welcome: React.FC = () => {
+/**
+ * Generate a welcome screen for users to create or import a wallet.
+ *
+ * @return {React.ReactElement} The welcome screen component.
+ */
+const Welcome: React.FC = (): React.ReactElement => {
   const history = useHistory();
 
-  const handleNavigateToWalletCreation = () => {
-    history.push("/create-wallet");
-  }
+  /**
+   * Handle navigate to wallet creation page.
+   */
+  const handleNavigateToWalletCreation = (): void => history.push("/create-wallet");
 
-  const handleNavigateToWalletImport = () => {
-    history.push("/import-wallet");
-  }
+  /**
+   * Handle navigate to wallet import page.
+   */
+  const handleNavigateToWalletImport = (): void => history.push("/import-wallet");
 
   return (
     <>

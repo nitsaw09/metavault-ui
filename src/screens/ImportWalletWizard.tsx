@@ -1,20 +1,38 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Container, Form, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-const ImportWalletWizard: React.FC = () => {
-  const [step, setStep] = useState(1);
-  const [showError, setShowError] = useState('none');
-  const [phraseInputs, setPhraseInputs] = useState(Array.from({ length: 12 }, (_, i) => i + 1)); 
-  const [phrases, setPhrases] = useState(Array(12).fill(''));
+/**
+ * ImportWalletWizard component
+ * @returns React.TReactElement
+ */
+const ImportWalletWizard: React.FC = () : React.ReactElement => {
+  const [step, setStep] = useState<number>(1);
+  const [showError, setShowError] = useState<string>('');
+  const [phraseInputs, setPhraseInputs] = useState<number[]>([]); 
+  const [phrases, setPhrases] = useState<string[]>([]);
 
   const history = useHistory();
 
-  const handleFormSubmit = (event: any) => {
+  useEffect(() => {
+    setStep(1);
+    setShowError('none')
+    setPhraseInputs(Array.from({ length: 12 }, (_, i) => i + 1));
+    setPhrases(Array(12).fill(''));
+  }, []);
+
+  /**
+   * A description of the entire function.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - the form event that triggered the submission
+   * @return {void} this function does not return anything
+   */
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    const password = event.target.formPassword.value;
-    const confirmPassword = event.target.formPasswordConfirm.value;
+    const formData = new FormData(event.target as HTMLFormElement);
+    const password = formData.get('formPassword') as string;
+    const confirmPassword = formData.get('formPasswordConfirm') as string;
 
     if (password !== confirmPassword) {
       alert("The passwords you entered do not match.");
@@ -29,6 +47,9 @@ const ImportWalletWizard: React.FC = () => {
     handleNextClick();
   };
 
+  /**
+   * Increments the step by 1.
+   */
   const handleNextClick = () => {
     setStep(step + 1);
   };
@@ -37,7 +58,12 @@ const ImportWalletWizard: React.FC = () => {
   //   setStep(step - 1);
   // };
 
-  const handleConfirmClick = () => {
+  /**
+   * Function to handle the click event for confirmation.
+   *
+   * @return {void} 
+   */
+  const handleConfirmClick = (): void => {
     const inputs = document.querySelectorAll('input[type="text"]');
     for (let i = 0; i < inputs.length; i++) {
       const input = inputs[i] as HTMLInputElement;
@@ -51,11 +77,17 @@ const ImportWalletWizard: React.FC = () => {
     history.push("/wallet");
   }
 
-  const onPastePhrase = (event: any) => {
+  /**
+   * Handle pasting a phrase from the clipboard.
+   *
+   * @param {React.ClipboardEvent<HTMLInputElement>} event - The clipboard event
+   * @return {void} No return value
+   */
+  const onPastePhrase = (event: React.ClipboardEvent<HTMLInputElement>): void => {
     let pastedText;
     if (event.clipboardData && event.clipboardData.getData) {
-        pastedText = (event.clipboardData.getData('text/plain')).split(' ');
-        console.log(pastedText);
+      pastedText = (event.clipboardData.getData('text/plain')).split(' ');
+      console.log(pastedText);
         if (pastedText.length !== 12) {
             setShowError('block');
         } else {
@@ -64,12 +96,16 @@ const ImportWalletWizard: React.FC = () => {
           for (let i = 0; i < pastedText.length; i++) {
               secretPhrase.push(pastedText[i]);
           }
-          setPhrases(secretPhrase);
         }
     }
-  }
+}
 
-  const renderStep = () => {
+  /**
+   * A function that renders different steps based on the value of 'step'.
+   *
+   * @return {React.ReactElement} The element representing the step to render.
+   */
+  const renderStep = (): (React.ReactElement | null) => {
     switch (step) {
       case 1:
         return (
