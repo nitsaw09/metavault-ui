@@ -245,7 +245,7 @@ const WalletCreationWizard: React.FC = (): React.ReactElement => {
   return (
     <Container className="wallet-form-wizard">
       <Row className="justify-content-center mt-5">
-        <Card>{renderStep()}</Card>
+        <Card style={{width: '320px'}}>{renderStep()}</Card>
       </Row>
     </Container>
   );

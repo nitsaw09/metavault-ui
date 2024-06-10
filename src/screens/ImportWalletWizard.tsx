@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 /**
  * ImportWalletWizard component
- * @returns React.TReactElement
+ * @returns React.ReactElement
  */
 const ImportWalletWizard: React.FC = () : React.ReactElement => {
   const [step, setStep] = useState<number>(1);
